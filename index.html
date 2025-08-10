@@ -14,26 +14,24 @@
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #f5f1eb 0%, #e8e0d3 100%);
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow: auto; /* Cambiato da hidden per consentire lo scroll */
             position: relative;
-            padding-top: 120px;
+            padding-top: 80px; /* Ridotto per mobile */
         }
 
         .archive-container {
-            height: calc(100vh - 120px);
+            min-height: calc(100vh - 80px);
             display: flex;
             flex-direction: column;
             position: relative;
-            padding-left: 10px;
-            padding-right: 10px;
-            padding-top: 280px;
-
+            padding: 10px;
+            padding-top: 150px; /* Ridotto per mobile */
         }
 
-        .folder {
-            background: linear-gradient(145deg, #d4af37, #b8941f);
-            border: 2px solid #8b7322;
+        /* Classe base per tutti i folder */
+        .folder-base {
+            border-top: 4px solid #6e7bac46;
             position: relative;
             cursor: pointer;
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -41,28 +39,39 @@
             overflow: visible;
             display: flex;
             flex-direction: column;
-            margin-bottom: -30px;
+            margin-bottom: -15px; /* Ridotto per mobile */
             border-radius: 16px 16px 0 0;
         }
 
-        .folder:not(.expanded):not(.selected) {
-            height: calc((100vh - 500px) / 4);
+        /* Texture specifiche */
+        .folder {
+            background-image: url('file:///C:/Users/Giacomo/Desktop/GaspBler/Textures/texture%202.png');
+            background-size: 150px 150px; /* Ridotto per mobile */
         }
 
-        .folder:nth-child(1) { z-index: 1; }
-        .folder:nth-child(2) { z-index: 2; }
-        .folder:nth-child(3) { z-index: 3; }
-        .folder:nth-child(4) { z-index: 4; }
-        .folder:nth-child(5) { z-index: 5; }
-        .folder:nth-child(6) { z-index: 6; }
+        .folder-dark {
+            background-image: url('file:///C:/Users/Giacomo/Desktop/GaspBler/Textures/texture%203.png');
+            background-size: 150px 150px; /* Ridotto per mobile */
+        }
 
-        .folder.selected {
-            height: 35vh;
-            transform: translateY(-20px);
+        .folder-base:not(.expanded):not(.selected) {
+            height: calc((100vh - 300px) / 4); /* Altezza più compatta */
+        }
+
+        .folder-base:nth-child(1) { z-index: 1; }
+        .folder-base:nth-child(2) { z-index: 2; }
+        .folder-base:nth-child(3) { z-index: 3; }
+        .folder-base:nth-child(4) { z-index: 4; }
+        .folder-base:nth-child(5) { z-index: 5; }
+        .folder-base:nth-child(6) { z-index: 6; }
+
+        .folder-base.selected {
+            height: 40vh; /* Altezza aumentata per visibilità */
+            transform: translateY(-10px);
             box-shadow: 0 12px 35px rgba(0,0,0,0.4);
         }
 
-        .folder.expanded {
+        .folder-base.expanded {
             position: fixed;
             top: 0;
             left: 0;
@@ -72,53 +81,64 @@
             transform: none;
             margin: 0;
             border-radius: 0;
-            overflow: hidden;
+            overflow: auto;
         }
 
-        .folder.expanded .folder-tab {
+        .folder-base.expanded .folder-tab,
+        .folder-base.expanded .folder-tab-dark {
             display: none;
         }
 
-        .folder-tab {
-            background: linear-gradient(145deg, #ddb347, #c9a136);
-            border: 2px solid #8b7322;
-            border-bottom: none;
+        /* Classe base per le tab */
+        .folder-tab, .folder-tab-dark {
+            border-top: none;
+            border-bottom: 3px solid #5b76c91e;
             position: absolute;
-            top: -36px;
-            padding: 8px 20px;
+            top: -33px;
+            padding: 8px 15px;
             border-radius: 16px 16px 0 0;
             box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
             z-index: 10;
-            min-width: 200px;
-            min-height: 34px;
+            min-width: 150px; /* Ridotto per mobile */
+            min-height: 30px;
             text-align: center;
+        }
+
+        .folder-tab {
+            background-image: url('file:///C:/Users/Giacomo/Desktop/GaspBler/Textures/texture%202.png');
+            background-size: 150px 150px;
+        }
+
+        .folder-tab-dark {
+            background-image: url('file:///C:/Users/Giacomo/Desktop/GaspBler/Textures/texture%203.png');
+            background-size: 150px 150px;
         }
 
         .sub-tabs {
             position: absolute;
-            top: -40px;
+            top: -35px;
             display: none;
-            gap: 8px;
+            gap: 6px;
             z-index: 15;
         }
 
-        .folder.selected .sub-tabs {
+        .folder-base.selected .sub-tabs {
             display: flex;
         }
 
         .sub-tab {
             background: linear-gradient(145deg, #c9a136, #b8941f);
             border: 2px solid #8b7322;
-            width: 40px;
-            height: 40px;
-            border-radius: 16px;
+            width: 35px;
+            height: 35px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 -2px 6px rgba(0,0,0,0.2);
-            font-size: 12px;
+            font-size: 10px;
             font-weight: bold;
             color: #2c1810;
         }
@@ -134,31 +154,32 @@
             box-shadow: 0 -4px 12px rgba(212, 175, 55, 0.4);
         }
 
-        .folder:nth-child(1) .folder-tab { left: 20px; }
-        .folder:nth-child(2) .folder-tab { left: 100px; }
-        .folder:nth-child(3) .folder-tab { left: 180px; }
-        .folder:nth-child(4) .folder-tab { left: 260px; }
-        .folder:nth-child(5) .folder-tab { left: 340px; }
-        .folder:nth-child(6) .folder-tab { left: 420px; }
+        /* Posizionamento delle tab e sub-tabs */
+        .folder-base:nth-child(1) .folder-tab { left: 10px; }
+        .folder-base:nth-child(2) .folder-tab-dark { left: 160px; }
+        .folder-base:nth-child(3) .folder-tab { left: 10px; }
+        .folder-base:nth-child(4) .folder-tab-dark { left: 160px; }
+        .folder-base:nth-child(5) .folder-tab { left: 10px; }
+        .folder-base:nth-child(6) .folder-tab-dark { left: 160px; }
 
-        .folder:nth-child(1) .sub-tabs { left: 220px; }
-        .folder:nth-child(2) .sub-tabs { left: 300px; }
-        .folder:nth-child(3) .sub-tabs { left: 380px; }
-        .folder:nth-child(4) .sub-tabs { left: 460px; }
-        .folder:nth-child(5) .sub-tabs { left: 540px; }
-        .folder:nth-child(6) .sub-tabs { left: 620px; }
+        .folder-base:nth-child(1) .sub-tabs { left: 160px; }
+        .folder-base:nth-child(2) .sub-tabs { left: 220px; }
+        .folder-base:nth-child(3) .sub-tabs { left: 160px; }
+        .folder-base:nth-child(4) .sub-tabs { left: 220px; }
+        .folder-base:nth-child(5) .sub-tabs { left: 160px; }
+        .folder-base:nth-child(6) .sub-tabs { left: 220px; }
 
-        .folder:nth-child(1) .sub-tabs { top: -35px; }
-        .folder:nth-child(2) .sub-tabs { top: -35px; }
-        .folder:nth-child(3) .sub-tabs { top: -35px; }
-        .folder:nth-child(4) .sub-tabs { top: -35px; }
-        .folder:nth-child(5) .sub-tabs { top: -35px; }
-        .folder:nth-child(6) .sub-tabs { top: -35px; }
+        .folder-base:nth-child(1) .sub-tabs { top: -35px; }
+        .folder-base:nth-child(2) .sub-tabs { top: -35px; }
+        .folder-base:nth-child(3) .sub-tabs { top: -35px; }
+        .folder-base:nth-child(4) .sub-tabs { top: -35px; }
+        .folder-base:nth-child(5) .sub-tabs { top: -35px; }
+        .folder-base:nth-child(6) .sub-tabs { top: -35px; }
 
         .folder-title {
-            color: #2c1810;
-            font-size: 14px;
-            font-weight: bold;
+            color: #ffffff;
+            font-size: 12px; /* Ridotto per mobile */
+            font-weight: thin;
             text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
             white-space: nowrap;
         }
@@ -170,29 +191,19 @@
         .folder-content {
             flex: 1;
             background: #faf8f3;
-            padding: 20px;
-            position: relative;
-            overflow: auto;
-            display: none;
-            margin-top: 0;
-        }
-
-        .folder-content {
-            flex: 1;
-            background: #faf8f3;
-            padding: 20px;
+            padding: 15px;
             position: relative;
             overflow: auto;
             display: none;
         }
 
-        .folder.selected .folder-content,
-        .folder.expanded .folder-content {
+        .folder-base.selected .folder-content,
+        .folder-base.expanded .folder-content {
             display: block;
         }
 
-        .folder.expanded .folder-content {
-            height: calc(100vh - 80px);
+        .folder-base.expanded .folder-content {
+            height: calc(100vh - 60px);
         }
 
         /* Stile per il foglio di lavoro collage */
@@ -203,15 +214,15 @@
             background: 
                 linear-gradient(90deg, rgba(200,200,200,0.3) 1px, transparent 1px),
                 linear-gradient(rgba(200,200,200,0.3) 1px, transparent 1px);
-            background-size: 20px 20px;
-            min-height: 500px;
+            background-size: 15px 15px; /* Griglia più piccola */
+            min-height: 300px;
         }
 
         .collage-element {
             position: absolute;
             background: white;
-            padding: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             border-radius: 4px;
             cursor: move;
             user-select: none;
@@ -231,7 +242,7 @@
             background: #fff9e6;
             font-family: 'Times New Roman', serif;
             line-height: 1.4;
-            min-width: 150px;
+            min-width: 120px; /* Ridotto */
         }
 
         .image-placeholder {
@@ -242,21 +253,21 @@
             justify-content: center;
             color: #666;
             font-style: italic;
-            min-width: 200px;
-            min-height: 150px;
+            min-width: 150px; /* Ridotto */
+            min-height: 100px; /* Ridotto */
         }
 
         /* Pulsanti di controllo */
         .controls {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
             display: none;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .folder.selected .controls,
-        .folder.expanded .controls {
+        .folder-base.selected .controls,
+        .folder-base.expanded .controls {
             display: flex;
         }
 
@@ -264,10 +275,11 @@
             background: #d4af37;
             color: #2c1810;
             border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 16px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 12px;
             transition: all 0.3s;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
@@ -280,31 +292,31 @@
         /* Bottone chiudi per vista espansa */
         .close-btn {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 10px;
+            right: 10px;
             background: #8b4513;
             color: white;
             border: none;
-            width: 35px;
-            height: 35px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             display: none;
         }
 
-        .folder.expanded .close-btn {
+        .folder-base.expanded .close-btn {
             display: block;
         }
 
         /* Animazioni per le cartelle non selezionate */
-        .folder:not(.selected):not(.expanded) .folder-content {
+        .folder-base:not(.selected):not(.expanded) .folder-content {
             opacity: 0;
             transform: translateY(20px);
         }
 
-        .folder.selected .folder-content {
+        .folder-base.selected .folder-content {
             opacity: 1;
             transform: translateY(0);
             animation: slideIn 0.4s ease-out;
@@ -325,25 +337,138 @@
         .content-preview {
             position: absolute;
             bottom: 10px;
-            left: 20px;
-            right: 20px;
+            left: 10px;
+            right: 10px;
             background: rgba(255,255,255,0.9);
-            padding: 10px;
+            padding: 8px;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 10px;
             color: #666;
             display: none;
         }
 
-        .folder.selected .content-preview {
+        .folder-base.selected .content-preview {
             display: block;
+        }
+
+        /* Media query per dispositivi mobili */
+        @media (max-width: 600px) {
+            body {
+                padding-top: 60px;
+            }
+
+            .archive-container {
+                padding-top: 100px;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+
+            .folder-base {
+                margin-bottom: -10px; /* Ancora più compatto */
+            }
+
+            .folder-base:not(.expanded):not(.selected) {
+                height: calc((100vh - 200px) / 4);
+            }
+
+            .folder-base.selected {
+                height: 50vh; /* Più spazio per il contenuto */
+                transform: translateY(-5px);
+            }
+
+            .folder-base.expanded .folder-content {
+                height: calc(100vh - 50px);
+            }
+
+            .folder-tab, .folder-tab-dark {
+                min-width: 120px;
+                min-height: 28px;
+                padding: 6px 10px;
+                top: -28px;
+                font-size: 11px;
+                background-size: 100px 100px;
+            }
+
+            .sub-tabs {
+                top: -30px;
+                gap: 4px;
+            }
+
+            .sub-tab {
+                width: 30px;
+                height: 30px;
+                font-size: 9px;
+                border-radius: 10px;
+            }
+
+            /* Posizionamento tab su mobile */
+            .folder-base:nth-child(1) .folder-tab { left: 20px; }
+            .folder-base:nth-child(2) .folder-tab-dark { left: 280px; }
+            .folder-base:nth-child(3) .folder-tab { left: 20px; }
+            .folder-base:nth-child(4) .folder-tab-dark { left: 280px; }
+            .folder-base:nth-child(5) .folder-tab { left: 20px; }
+            .folder-base:nth-child(6) .folder-tab-dark { left: 280px; }
+
+            .folder-base:nth-child(1) .sub-tabs { left: 125px; }
+            .folder-base:nth-child(2) .sub-tabs { left: 165px; }
+            .folder-base:nth-child(3) .sub-tabs { left: 125px; }
+            .folder-base:nth-child(4) .sub-tabs { left: 165px; }
+            .folder-base:nth-child(5) .sub-tabs { left: 125px; }
+            .folder-base:nth-child(6) .sub-tabs { left: 165px; }
+
+            .folder-title {
+                font-size: 11px;
+            }
+
+            .folder-content {
+                padding: 10px;
+            }
+
+            .canvas-area {
+                background-size: 10px 10px;
+                min-height: 200px;
+            }
+
+            .text-element {
+                min-width: 100px;
+                font-size: 12px;
+            }
+
+            .image-placeholder {
+                min-width: 120px;
+                min-height: 80px;
+                font-size: 10px;
+            }
+
+            .controls {
+                top: 5px;
+                right: 5px;
+                gap: 5px;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                padding: 5px 10px;
+                font-size: 10px;
+            }
+
+            .close-btn {
+                width: 25px;
+                height: 25px;
+                font-size: 14px;
+            }
+
+            .content-preview {
+                font-size: 9px;
+                padding: 6px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="archive-container">
         <!-- Cartella 1: Schizzi Iniziali -->
-        <div class="folder" data-folder="1">
+        <div class="folder-base folder" data-folder="1">
             <div class="folder-tab">
                 <div class="folder-title">Schizzi Iniziali</div>
             </div>
@@ -372,8 +497,8 @@
         </div>
 
         <!-- Cartella 2: Ricerca Tessuti -->
-        <div class="folder" data-folder="2">
-            <div class="folder-tab">
+        <div class="folder-base folder-dark" data-folder="2">
+            <div class="folder-tab-dark">
                 <div class="folder-title">Ricerca Tessuti</div>
             </div>
             <div class="sub-tabs">
@@ -401,7 +526,7 @@
         </div>
 
         <!-- Cartella 3: Palette Colori -->
-        <div class="folder" data-folder="3">
+        <div class="folder-base folder" data-folder="3">
             <div class="folder-tab">
                 <div class="folder-title">Palette Colori</div>
             </div>
@@ -427,8 +552,8 @@
         </div>
 
         <!-- Cartella 4: Prototipi -->
-        <div class="folder" data-folder="4">
-            <div class="folder-tab">
+        <div class="folder-base folder-dark" data-folder="4">
+            <div class="folder-tab-dark">
                 <div class="folder-title">Prototipi</div>
             </div>
             <div class="sub-tabs">
@@ -453,7 +578,7 @@
         </div>
 
         <!-- Cartella 5: Fitting & Modifiche -->
-        <div class="folder" data-folder="5">
+        <div class="folder-base folder" data-folder="5">
             <div class="folder-tab">
                 <div class="folder-title">Fitting & Modifiche</div>
             </div>
@@ -479,8 +604,8 @@
         </div>
 
         <!-- Cartella 6: Collezione Finale -->
-        <div class="folder" data-folder="6">
-            <div class="folder-tab">
+        <div class="folder-base folder-dark" data-folder="6">
+            <div class="folder-tab-dark">
                 <div class="folder-title">Collezione Finale</div>
             </div>
             <div class="sub-tabs">
@@ -519,7 +644,7 @@
                 e.stopPropagation();
                 
                 // Rimuovi active da tutte le sotto-linguette della stessa cartella
-                const parentFolder = this.closest('.folder');
+                const parentFolder = this.closest('.folder-base');
                 parentFolder.querySelectorAll('.sub-tab').forEach(tab => {
                     tab.classList.remove('active');
                 });
@@ -527,15 +652,29 @@
                 // Attiva questa sotto-linguetta
                 this.classList.add('active');
                 
-                // Qui puoi aggiungere la logica per cambiare il contenuto
-                // basato sulla sotto-linguetta selezionata
+                // Logica per cambiare il contenuto basato sulla sotto-linguetta
+                const subtabType = this.dataset.subtab;
+                console.log('Sotto-area selezionata:', subtabType);
+            });
+
+            // Supporto per touch
+            subTab.addEventListener('touchstart', function(e) {
+                e.stopPropagation();
+                
+                const parentFolder = this.closest('.folder-base');
+                parentFolder.querySelectorAll('.sub-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                
+                this.classList.add('active');
+                
                 const subtabType = this.dataset.subtab;
                 console.log('Sotto-area selezionata:', subtabType);
             });
         });
 
-        // Gestione click sulle cartelle
-        document.querySelectorAll('.folder').forEach(folder => {
+        // Gestione click e touch sulle cartelle
+        document.querySelectorAll('.folder-base').forEach(folder => {
             folder.addEventListener('click', function(e) {
                 if (e.target.closest('.close-btn') || e.target.closest('.controls') || e.target.closest('.collage-element')) {
                     return;
@@ -543,25 +682,46 @@
 
                 const folderNum = this.dataset.folder;
                 
-                // Se è già espansa, non fare nulla
                 if (this.classList.contains('expanded')) {
                     return;
                 }
 
-                // Se è già selezionata, espandila
                 if (this.classList.contains('selected')) {
                     expandFolder(this);
                     return;
                 }
 
-                // Deseleziona tutte le altre cartelle
-                document.querySelectorAll('.folder').forEach(f => {
+                document.querySelectorAll('.folder-base').forEach(f => {
                     f.classList.remove('selected');
                 });
 
-                // Seleziona questa cartella
                 this.classList.add('selected');
                 selectedFolder = this;
+            });
+
+            folder.addEventListener('touchstart', function(e) {
+                if (e.target.closest('.close-btn') || e.target.closest('.controls') || e.target.closest('.collage-element')) {
+                    return;
+                }
+
+                const folderNum = this.dataset.folder;
+                
+                if (this.classList.contains('expanded')) {
+                    return;
+                }
+
+                if (this.classList.contains('selected')) {
+                    expandFolder(this);
+                    return;
+                }
+
+                document.querySelectorAll('.folder-base').forEach(f => {
+                    f.classList.remove('selected');
+                });
+
+                this.classList.add('selected');
+                selectedFolder = this;
+                e.preventDefault();
             });
         });
 
@@ -572,7 +732,7 @@
         }
 
         function closeFolder(btn) {
-            const folder = btn.closest('.folder');
+            const folder = btn.closest('.folder-base');
             folder.classList.remove('expanded');
             folder.classList.remove('selected');
             expandedFolder = null;
@@ -584,8 +744,8 @@
             const canvas = btn.closest('.folder-content').querySelector('.canvas-area');
             const textEl = document.createElement('div');
             textEl.className = 'collage-element text-element';
-            textEl.style.top = Math.random() * 200 + 50 + 'px';
-            textEl.style.left = Math.random() * 300 + 50 + 'px';
+            textEl.style.top = Math.random() * 100 + 20 + 'px';
+            textEl.style.left = Math.random() * 150 + 20 + 'px';
             textEl.innerHTML = '<div contenteditable="true">Nuovo testo...</div>';
             canvas.appendChild(textEl);
             makeElementDraggable(textEl);
@@ -595,18 +755,19 @@
             const canvas = btn.closest('.folder-content').querySelector('.canvas-area');
             const imgEl = document.createElement('div');
             imgEl.className = 'collage-element image-placeholder';
-            imgEl.style.top = Math.random() * 200 + 50 + 'px';
-            imgEl.style.left = Math.random() * 300 + 50 + 'px';
+            imgEl.style.top = Math.random() * 100 + 20 + 'px';
+            imgEl.style.left = Math.random() * 150 + 20 + 'px';
             imgEl.textContent = '[Nuova immagine]';
             canvas.appendChild(imgEl);
             makeElementDraggable(imgEl);
         }
 
-        // Rendi gli elementi trascinabili
+        // Rendi gli elementi trascinabili (con supporto touch)
         function makeElementDraggable(element) {
             let isDragging = false;
             let startX, startY, startLeft, startTop;
 
+            // Mouse events
             element.addEventListener('mousedown', function(e) {
                 if (e.target.getAttribute('contenteditable') === 'true') return;
                 
@@ -615,8 +776,8 @@
                 
                 startX = e.clientX;
                 startY = e.clientY;
-                startLeft = parseInt(window.getComputedStyle(element).left);
-                startTop = parseInt(window.getComputedStyle(element).top);
+                startLeft = parseInt(window.getComputedStyle(element).left) || 0;
+                startTop = parseInt(window.getComputedStyle(element).top) || 0;
                 
                 element.classList.add('selected');
                 e.preventDefault();
@@ -639,13 +800,58 @@
                     element.classList.remove('selected');
                 }
             });
+
+            // Touch events
+            element.addEventListener('touchstart', function(e) {
+                if (e.target.getAttribute('contenteditable') === 'true') return;
+                
+                isDragging = true;
+                draggedElement = element;
+                
+                const touch = e.touches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+                startLeft = parseInt(window.getComputedStyle(element).left) || 0;
+                startTop = parseInt(window.getComputedStyle(element).top) || 0;
+                
+                element.classList.add('selected');
+                e.preventDefault();
+            });
+
+            document.addEventListener('touchmove', function(e) {
+                if (!isDragging || draggedElement !== element) return;
+                
+                const touch = e.touches[0];
+                const deltaX = touch.clientX - startX;
+                const deltaY = touch.clientY - startY;
+                
+                element.style.left = startLeft + deltaX + 'px';
+                element.style.top = startTop + deltaY + 'px';
+                e.preventDefault();
+            });
+
+            document.addEventListener('touchend', function() {
+                if (draggedElement === element) {
+                    isDragging = false;
+                    draggedElement = null;
+                    element.classList.remove('selected');
+                }
+            });
         }
 
         // Inizializza il drag per gli elementi esistenti
         document.querySelectorAll('.collage-element').forEach(makeElementDraggable);
 
-        // Gestione click fuori dagli elementi per deselezionare
+        // Gestione click/touch fuori dagli elementi per deselezionare
         document.addEventListener('click', function(e) {
+            if (!e.target.closest('.collage-element')) {
+                document.querySelectorAll('.collage-element').forEach(el => {
+                    el.classList.remove('selected');
+                });
+            }
+        });
+
+        document.addEventListener('touchstart', function(e) {
             if (!e.target.closest('.collage-element')) {
                 document.querySelectorAll('.collage-element').forEach(el => {
                     el.classList.remove('selected');
