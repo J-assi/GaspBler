@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400&display=swap" rel="stylesheet">
     <title>Archivio di sem</title>
     <style>
         * {
@@ -13,34 +14,40 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #f5f1eb 0%, #e8e0d3 100%);
+            background: linear-gradient(180deg, #000000 0%, #000000 20%, #000000 100%);
             min-height: 100vh;
             overflow: auto; /* Cambiato da hidden per consentire lo scroll */
             position: relative;
-            padding-top: 80px; /* Ridotto per mobile */
+            padding-top: 120px; /* Ridotto per mobile */
         }
 
         .archive-container {
-            min-height: calc(100vh - 80px);
+            height: 550px;
+            width: calc(100%);
             display: flex;
             flex-direction: column;
             position: relative;
-            padding: 10px;
-            padding-top: 150px; /* Ridotto per mobile */
+            padding: 10;
+            overflow-y: hidden;
+            padding-top: 70px; /* Ridotto per mobile */
         }
 
         /* Classe base per tutti i folder */
         .folder-base {
-            border-top: 4px solid #6e7bac46;
             position: relative;
             cursor: pointer;
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
             overflow: visible;
             display: flex;
             flex-direction: column;
-            margin-bottom: -15px; /* Ridotto per mobile */
+            margin-bottom: -20px; /* Ridotto per mobile */
             border-radius: 16px 16px 0 0;
+            box-shadow: 0 0px 25px rgba(0,0,0,0.7);
+        }
+
+        .folder-base:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0px 40px rgba(0,0,0,0.8);
         }
 
         /* Texture specifiche */
@@ -55,7 +62,7 @@
         }
 
         .folder-base:not(.expanded):not(.selected) {
-            height: calc((100vh - 300px) / 4); /* Altezza più compatta */
+            height: calc((100vh - 200px) / 6); /* Diviso per 6 cartelle, più compatto */
         }
 
         .folder-base:nth-child(1) { z-index: 1; }
@@ -66,9 +73,9 @@
         .folder-base:nth-child(6) { z-index: 6; }
 
         .folder-base.selected {
-            height: 40vh; /* Altezza aumentata per visibilità */
+            height: 20vh; /* Altezza aumentata per visibilità */
             transform: translateY(-10px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+            box-shadow: 0 0px 25px rgba(0,0,0,0.7);
         }
 
         .folder-base.expanded {
@@ -82,6 +89,7 @@
             margin: 0;
             border-radius: 0;
             overflow: auto;
+            box-shadow: 0 0px 10px rgba(0,0,0,0.7);
         }
 
         .folder-base.expanded .folder-tab,
@@ -89,19 +97,19 @@
             display: none;
         }
 
-        /* Classe base per le tab */
         .folder-tab, .folder-tab-dark {
             border-top: none;
-            border-bottom: 3px solid #5b76c91e;
+            border-bottom: 3px solid #5b77c900;
             position: absolute;
             top: -33px;
             padding: 8px 15px;
-            border-radius: 16px 16px 0 0;
-            box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+            border-radius: 4px 4px 0 0; /* Ridotto per un aspetto più squadrato */
             z-index: 10;
             min-width: 150px; /* Ridotto per mobile */
             min-height: 30px;
             text-align: center;
+            clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+            background-size: 150px 150px;
         }
 
         .folder-tab {
@@ -114,12 +122,16 @@
             background-size: 150px 150px;
         }
 
+        .folder-tab:hover, .folder-tab-dark:hover {
+            box-shadow: none;  
+        }
+
         .sub-tabs {
             position: absolute;
-            top: -35px;
+            top: -30px; 
             display: none;
-            gap: 6px;
-            z-index: 15;
+            gap: 4px; 
+            z-index: 15; 
         }
 
         .folder-base.selected .sub-tabs {
@@ -127,60 +139,79 @@
         }
 
         .sub-tab {
-            background: linear-gradient(145deg, #c9a136, #b8941f);
-            border: 2px solid #8b7322;
-            width: 35px;
-            height: 35px;
-            border-radius: 12px;
+            border-bottom: 2px solid #5b76c91e; 
+            margin-bottom: 2px;
+            min-width: 40px; 
+            min-height: 25px; 
+            padding: 5px 8px; 
+            border-radius: 3px 3px 0 0; 
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 9px; 
+            font-family: 'Lora', serif;
+            font-weight: 400;
+            color: #f5f1eb; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3); 
+            text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 -2px 6px rgba(0,0,0,0.2);
-            font-size: 10px;
-            font-weight: bold;
-            color: #2c1810;
+            clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); 
+            background-size: 100px 100px; 
+        }
+
+        .folder-base.folder .sub-tab {
+            background-image: url('https://github.com/J-assi/GaspBler/blob/main/Textures/texture%202.png?raw=true');
+        }
+
+        .folder-base.folder-dark .sub-tab {
+            background-image: url('https://github.com/J-assi/GaspBler/blob/main/Textures/texture%203.png?raw=true');
         }
 
         .sub-tab:hover {
-            background: linear-gradient(145deg, #ddb347, #c9a136);
-            transform: translateY(-2px);
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
+        transform: translateY(-2px); 
+        background-image: inherit; 
         }
 
         .sub-tab.active {
-            background: linear-gradient(145deg, #f4d03f, #d4af37);
-            box-shadow: 0 -4px 12px rgba(212, 175, 55, 0.4);
+        background-image: inherit; /* Mantiene la texture originale */
         }
 
         /* Posizionamento delle tab e sub-tabs */
-        .folder-base:nth-child(1) .folder-tab { left: 10px; }
-        .folder-base:nth-child(2) .folder-tab-dark { left: 160px; }
-        .folder-base:nth-child(3) .folder-tab { left: 10px; }
-        .folder-base:nth-child(4) .folder-tab-dark { left: 160px; }
-        .folder-base:nth-child(5) .folder-tab { left: 10px; }
-        .folder-base:nth-child(6) .folder-tab-dark { left: 160px; }
+        /*.folder-base:nth-child(1) .folder-tab { left: 9%; }
+        .folder-base:nth-child(2) .folder-tab-dark { left: 20%; }
+        .folder-base:nth-child(3) .folder-tab { left: 32%; }
+        .folder-base:nth-child(4) .folder-tab-dark { left: 44%; }
+        .folder-base:nth-child(5) .folder-tab { left: 56%; }
+        .folder-base:nth-child(6) .folder-tab-dark { left: 68%; }*/
 
-        .folder-base:nth-child(1) .sub-tabs { left: 160px; }
-        .folder-base:nth-child(2) .sub-tabs { left: 220px; }
-        .folder-base:nth-child(3) .sub-tabs { left: 160px; }
-        .folder-base:nth-child(4) .sub-tabs { left: 220px; }
-        .folder-base:nth-child(5) .sub-tabs { left: 160px; }
-        .folder-base:nth-child(6) .sub-tabs { left: 220px; }
+        .folder-base:nth-child(1) .folder-tab { left: 86%; }
+        .folder-base:nth-child(2) .folder-tab-dark { left: 70%; }
+        .folder-base:nth-child(3) .folder-tab { left: 54%; }
+        .folder-base:nth-child(4) .folder-tab-dark { left: 38%; }
+        .folder-base:nth-child(5) .folder-tab { left: 22%; }
+        .folder-base:nth-child(6) .folder-tab-dark { left: 6%; }
 
-        .folder-base:nth-child(1) .sub-tabs { top: -35px; }
-        .folder-base:nth-child(2) .sub-tabs { top: -35px; }
-        .folder-base:nth-child(3) .sub-tabs { top: -35px; }
-        .folder-base:nth-child(4) .sub-tabs { top: -35px; }
-        .folder-base:nth-child(5) .sub-tabs { top: -35px; }
-        .folder-base:nth-child(6) .sub-tabs { top: -35px; }
+        .folder-base:nth-child(1) .sub-tabs { left: 86%; }
+        .folder-base:nth-child(2) .sub-tabs { left: 70%; }
+        .folder-base:nth-child(3) .sub-tabs { left: 54%; }
+        .folder-base:nth-child(4) .sub-tabs { left: 38%; }
+        .folder-base:nth-child(5) .sub-tabs { left: 22%; }
+        .folder-base:nth-child(6) .sub-tabs { left: 6%; }
+
+        .folder-base:nth-child(1) .sub-tabs { top: -25px; margin-left: -86px;}
+        .folder-base:nth-child(2) .sub-tabs { top: -25px; margin-left: -86px; }
+        .folder-base:nth-child(3) .sub-tabs { top: -25px; margin-left: -86px;}
+        .folder-base:nth-child(4) .sub-tabs { top: -25px; margin-left: 153px;}
+        .folder-base:nth-child(5) .sub-tabs { top: -25px; margin-left: 153px;}
+        .folder-base:nth-child(6) .sub-tabs { top: -25px; margin-left: 153px;}
 
         .folder-title {
-            color: #ffffff;
+            color: #f5f1eb; /* Colore chiaro in linea con lo sfondo */
             font-size: 12px; /* Ridotto per mobile */
-            font-weight: thin;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+            font-family: 'Lora', serif; /* Font serif bastonato e pulito */
+            font-weight: 400; /* Peso leggero per un aspetto pulito */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Ombra scura per contrasto */
             white-space: nowrap;
         }
 
@@ -351,28 +382,36 @@
             display: block;
         }
 
+
+        
         /* Media query per dispositivi mobili */
         @media (max-width: 600px) {
             body {
-                padding-top: 60px;
+                padding-top: 50px;
             }
 
             .archive-container {
-                padding-top: 100px;
-                padding-left: 5px;
-                padding-right: 5px;
+            min-height: calc(100vh - 80px);
+            width: 92%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding-right: 20px;
+            padding-left: 20px;
+            padding-top: 100px; /* Ridotto per mobile */
             }
 
+
             .folder-base {
-                margin-bottom: -10px; /* Ancora più compatto */
+                margin-bottom: -15px; /* Ancora più compatto */
             }
 
             .folder-base:not(.expanded):not(.selected) {
-                height: calc((100vh - 200px) / 4);
+                height: calc((100vh - 250px) / 6); /* Altezza compatta per 6 cartelle */
             }
 
             .folder-base.selected {
-                height: 50vh; /* Più spazio per il contenuto */
+                height: 45vh; /* Più spazio per il contenuto */
                 transform: translateY(-5px);
             }
 
@@ -382,42 +421,73 @@
 
             .folder-tab, .folder-tab-dark {
                 min-width: 120px;
-                min-height: 28px;
-                padding: 6px 10px;
-                top: -28px;
-                font-size: 11px;
-                background-size: 100px 100px;
+                min-height: 35px;
+                padding: 12px 15px;
+                top: -40px;
+                font-size: 10px;
+                background-size: 80px 80px;
+                border-radius: 3px 3px 0 0; /* Ancora più squadrato su mobile */
+                clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); /* Trapezio isoscele */
+                box-shadow: 0 0px 20px rgba(0,0,0,0.7);
+            }
+
+            .folder-tab:hover, .folder-tab-dark:hover {
+                box-shadow: 0 0px 30px rgba(0,0,0,0.8); /* Ombra ridotta rispetto al folder hover */
             }
 
             .sub-tabs {
-                top: -30px;
-                gap: 4px;
+                top: -25px;
+                gap: 3px;
             }
 
             .sub-tab {
-                width: 30px;
-                height: 30px;
-                font-size: 9px;
-                border-radius: 10px;
+            min-width: 35px; /* Ancora più piccolo su mobile */
+            min-height: 22px;
+            padding: 4px 6px;
+            border-radius: 2px 2px 0 0; /* Ancora più squadrato */
+            font-size: 8px;
+            background-size: 70px 70px; /* Texture proporzionata */
+            clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); /* Trapezio isoscele */
+            box-shadow: 0 0px 15px rgba(0,0,0,0.7);
+            
+            }
+
+            .sub-tab:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0px 20px rgba(0,0,0,0.8);
+            }
+
+             .sub-tab.active {
+            box-shadow: 0 0px 15px rgba(0,0,0,0.7);
             }
 
             /* Posizionamento tab su mobile */
-            .folder-base:nth-child(1) .folder-tab { left: 20px; }
-            .folder-base:nth-child(2) .folder-tab-dark { left: 280px; }
-            .folder-base:nth-child(3) .folder-tab { left: 20px; }
-            .folder-base:nth-child(4) .folder-tab-dark { left: 280px; }
-            .folder-base:nth-child(5) .folder-tab { left: 20px; }
-            .folder-base:nth-child(6) .folder-tab-dark { left: 280px; }
+            .folder-base:nth-child(1) .folder-tab { left: 61%; }
+            .folder-base:nth-child(2) .folder-tab-dark { left: 50%; }
+            .folder-base:nth-child(3) .folder-tab { left: 39%; }
+            .folder-base:nth-child(4) .folder-tab-dark { left: 28%; }
+            .folder-base:nth-child(5) .folder-tab { left: 17%; }
+            .folder-base:nth-child(6) .folder-tab-dark { left: 6%; }
 
-            .folder-base:nth-child(1) .sub-tabs { left: 125px; }
-            .folder-base:nth-child(2) .sub-tabs { left: 165px; }
-            .folder-base:nth-child(3) .sub-tabs { left: 125px; }
-            .folder-base:nth-child(4) .sub-tabs { left: 165px; }
-            .folder-base:nth-child(5) .sub-tabs { left: 125px; }
-            .folder-base:nth-child(6) .sub-tabs { left: 165px; }
+            .folder-base:nth-child(1) .sub-tabs { left: 61%; }
+            .folder-base:nth-child(2) .sub-tabs { left: 50%; }
+            .folder-base:nth-child(3) .sub-tabs { left: 39%; }
+            .folder-base:nth-child(4) .sub-tabs { left: 28%; }
+            .folder-base:nth-child(5) .sub-tabs { left: 17%; }
+            .folder-base:nth-child(6) .sub-tabs { left: 6%; }
+
+            .folder-base:nth-child(1) .sub-tabs { top: -21px; margin-left: -78px;}
+            .folder-base:nth-child(2) .sub-tabs { top: -21px; margin-left: -78px; }
+            .folder-base:nth-child(3) .sub-tabs { top: -21px; margin-left: -78px;}
+            .folder-base:nth-child(4) .sub-tabs { top: -21px; margin-left: 126px;}
+            .folder-base:nth-child(5) .sub-tabs { top: -21px; margin-left: 126px;}
+            .folder-base:nth-child(6) .sub-tabs { top: -21Px; margin-left: 126px;}
 
             .folder-title {
                 font-size: 11px;
+                font-family: 'Lora', serif; /* Stesso font serif per mobile */
+                color: #f5f1eb;
+                text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
             }
 
             .folder-content {
@@ -463,9 +533,183 @@
                 padding: 6px;
             }
         }
+
+        /* Barre laterali metalliche */
+.sidebar {
+    position: fixed;
+    top: 0;
+    width: 20px;
+    height: 100vh;
+    border: 2px solid #808080;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.3), 0 0 20px rgba(0,0,0,0.5);
+    z-index: 149;
+}
+
+.sidebar-left {
+    left: 0;
+    border-right: 3px solid #606060;
+    background: linear-gradient(90deg, #c0c0c0 0%, #909090 50%, #707070 100%);
+}
+
+.sidebar-right {
+    right: 0;
+    border-left: 3px solid #606060;
+    background: linear-gradient(90deg, #707070 0%, #909090 50%, #c0c0c0 100%);
+
+}
+
+/* Texture metallica per le barre */
+.sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: color(srgb red green blue);
+    pointer-events: none;
+}
+
+/* Cassetto inferiore */
+.drawer-container {
+    position: fixed;
+    bottom: 0;
+    left: none;
+    right: none;
+    height: 280px;
+    width: 100%;
+    background: linear-gradient(180deg, #c0c0c0 0%, #909090 50%, #707070 100%);
+    border: 2px solid #808080;
+    border-bottom: none;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.3), 0 -5px 20px rgba(0,0,0,0.5);
+    z-index: 150;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Texture metallica per il cassetto */
+.drawer-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: color(srgb red green blue);
+    pointer-events: none;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Maniglia del cassetto */
+.drawer-handle {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 25px;
+    background: linear-gradient(180deg, #d4d4d4 0%, #a0a0a0 50%, #808080 100%);
+    border: 2px solid #606060;
+    border-radius: 12px;
+    box-shadow: 
+        inset 0 2px 4px rgba(255,255,255,0.3),
+        inset 0 -2px 4px rgba(0,0,0,0.3),
+        0 3px 8px rgba(0,0,0,0.4);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.drawer-handle:hover {
+    background: linear-gradient(180deg, #e4e4e4 0%, #b0b0b0 50%, #909090 100%);
+    transform: translateX(-50%) translateY(-1px);
+}
+
+.drawer-handle::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    right: 15px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, #999 20%, #999 80%, transparent 100%);
+    border-radius: 2px;
+    transform: translateY(-50%);
+}
+
+/* Targhetta sotto la maniglia */
+.drawer-label {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, #f0f0f0 0%, #d0d0d0 100%);
+    border: 1px solid #999;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-family: 'Arial', sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.archive-container {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 80px; /* Spazio aggiuntivo per il cassetto */
+}
+
+/* Media query per mobile */
+@media (max-width: 600px) {
+    .sidebar {
+        width: 30px;
+    }
+    
+    body {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    
+    .drawer-container {
+        left: 30px;
+        right: 30px;
+        height: 60px;
+    }
+    
+    .drawer-handle {
+        width: 80px;
+        height: 20px;
+        top: 10px;
+    }
+    
+    .drawer-label {
+        top: 35px;
+        font-size: 8px;
+        padding: 3px 8px;
+    }
+    
+    body {
+        padding-bottom: 60px;
+    }
+    
+    .archive-container {
+        margin-bottom: 60px;
+    }
+}
     </style>
 </head>
 <body>
+    
+    <!-- Cassetto inferiore -->
+<div class="drawer-container">
+    <div class="drawer-handle"></div>
+    <div class="drawer-label">Archivio SEM</div>
+</div>
+    <!-- Barre laterali -->
+<div class="sidebar sidebar-left"></div>
+<div class="sidebar sidebar-right"></div>
+
     <div class="archive-container">
         <!-- Cartella 1: Schizzi Iniziali -->
         <div class="folder-base folder" data-folder="1">
@@ -580,7 +824,7 @@
         <!-- Cartella 5: Fitting & Modifiche -->
         <div class="folder-base folder" data-folder="5">
             <div class="folder-tab">
-                <div class="folder-title">Fitting & Modifiche</div>
+                <div class="folder-title">Fitting</div>
             </div>
             <div class="sub-tabs">
                 <div class="sub-tab" data-subtab="notes" title="Note Fitting">N</div>
@@ -606,7 +850,7 @@
         <!-- Cartella 6: Collezione Finale -->
         <div class="folder-base folder-dark" data-folder="6">
             <div class="folder-tab-dark">
-                <div class="folder-title">Collezione Finale</div>
+                <div class="folder-title">Collezione</div>
             </div>
             <div class="sub-tabs">
                 <div class="sub-tab" data-subtab="lookbook" title="Lookbook">L</div>
