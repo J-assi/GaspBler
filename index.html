@@ -22,15 +22,48 @@
         }
 
         .archive-container {
-            height: 550px;
-            width: calc(100%);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            padding: 10;
-            overflow-y: hidden;
-            padding-top: 70px; /* Ridotto per mobile */
-        }
+    height: 550px;
+    width: calc(100%);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 10px;
+    overflow-y: hidden;
+    padding-top: 70px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 80px;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(0);
+}
+
+/* Stato iniziale - archive-container nascosto */
+.archive-container.hidden {
+    transform: translateY(80vh);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Stato visibile - archive-container mostrato */
+.archive-container.visible {
+    transform: translateY(30);
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Quando il cassetto è compatto, mostra l'archive-container */
+.drawer-container.compact ~ .archive-container {
+    transform: translateY(40);
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Quando il cassetto è iniziale, nascondi l'archive-container */
+.drawer-container.initial ~ .archive-container {
+    transform: translateY(90vh);
+    opacity: 0;
+    pointer-events: none;
+}
 
         /* Classe base per tutti i folder */
         .folder-base {
@@ -62,7 +95,7 @@
         }
 
         .folder-base:not(.expanded):not(.selected) {
-            height: calc((100vh - 200px) / 6); /* Diviso per 6 cartelle, più compatto */
+            height: calc((100vh - 200px) / 1); /* Diviso per 6 cartelle, più compatto */
         }
 
         .folder-base:nth-child(1) { z-index: 1; }
@@ -384,156 +417,294 @@
 
 
         
-        /* Media query per dispositivi mobili */
-        @media (max-width: 600px) {
-            body {
-                padding-top: 50px;
-            }
+        /* ===== RESPONSIVE DESIGN - MOBILE E TABLET ===== */
 
-            .archive-container {
-            min-height: calc(100vh - 80px);
-            width: 92%;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            padding-right: 20px;
-            padding-left: 20px;
-            padding-top: 100px; /* Ridotto per mobile */
-            }
+/* Tablet (768px - 1024px) */
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+    body {
+        padding-top: 80px;
+    }
+    
+    .archive-container {
+        height: 500px;
+        padding-top: 50px;
+    }
+    
+    .folder-base {
+        margin-bottom: -15px;
+    }
+    
+    .folder, .folder-dark {
+        background-size: 120px 120px;
+    }
+    
+    .folder-tab, .folder-tab-dark {
+        min-width: 130px;
+        min-height: 28px;
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+    
+    .folder-title {
+        font-size: 11px;
+    }
+    
+    .sub-tab {
+        min-width: 35px;
+        min-height: 22px;
+        padding: 4px 6px;
+        font-size: 8px;
+        background-size: 80px 80px;
+    }
+    
+    .folder-base:not(.expanded):not(.selected) {
+        height: calc((100vh - 180px) / 6);
+    }
+    
+    .folder-base.selected {
+        height: 18vh;
+    }
+}
 
+/* Mobile Large (480px - 767px) */
+@media screen and (max-width: 767px) and (min-width: 480px) {
+    body {
+        padding-top: 145px;
+    }
+    
+    .archive-container {
+        height: 550px;
+        padding-top: 40px;
+        padding: 40px;
+    }
+    
+    .folder-base {
+        margin-bottom: -20px;
+    }
+    
+    .folder, .folder-dark {
+        background-size: 100px 100px;
+    }
+    
+    .folder-tab, .folder-tab-dark {
+        min-width: 110px;
+        min-height: 30px;
+        padding: 0px 0px;
+        font-size: 10px;
+        top: -28px;
+    }
+    
+    .folder-title {
+        padding: 8px;
+        font-size: 10px;
+    }
+    
+    .sub-tab {
+        min-width: 30px;
+        min-height: 10px;
+        padding: 3px 5px;
+        font-size: 7px;
+        background-size: 60px 60px;
+    }
+    
+    .sub-tabs {
+        top: -22px;
+        gap: 2px;
+    }
+    
+    .folder-base:not(.expanded):not(.selected) {
+        height: calc((100vh - 160px) / 6);
+    }
+    
+    .folder-base.selected {
+        height: 16vh;
+    }
+    
+    /* Riposizionamento tabs per mobile */
+    .folder-base:nth-child(1) .folder-tab { left: 82%; }
+    .folder-base:nth-child(2) .folder-tab-dark { left: 66%; }
+    .folder-base:nth-child(3) .folder-tab { left: 50%; }
+    .folder-base:nth-child(4) .folder-tab-dark { left: 34%; }
+    .folder-base:nth-child(5) .folder-tab { left: 18%; }
+    .folder-base:nth-child(6) .folder-tab-dark { left: 2%; }
+    
+    .folder-base:nth-child(1) .sub-tabs { left: 82%; margin-left: -76px; }
+    .folder-base:nth-child(2) .sub-tabs { left: 66%; margin-left: -76px; }
+    .folder-base:nth-child(3) .sub-tabs { left: 50%; margin-left: -76px; }
+    .folder-base:nth-child(4) .sub-tabs { left: 34%; margin-left: 120px; }
+    .folder-base:nth-child(5) .sub-tabs { left: 18%; margin-left: 120px; }
+    .folder-base:nth-child(6) .sub-tabs { left: 2%; margin-left: 120px; }
+    
+    .controls {
+        top: 5px;
+        right: 5px;
+        gap: 6px;
+    }
+    
+    .btn {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+    
+    .close-btn {
+        width: 25px;
+        height: 25px;
+        font-size: 14px;
+        top: 5px;
+        right: 5px;
+    }
+}
 
-            .folder-base {
-                margin-bottom: -15px; /* Ancora più compatto */
-            }
+/* Mobile Small (320px - 479px) */
+@media screen and (max-width: 479px) {
+    body {
+        padding-top: 135px;
+        overflow: visible;
+    }
+    
+    .archive-container {
+        height: 560px;
+        padding-top: 10px;
+        padding: 40px;
+    }
+    
+    .folder-base {
+        margin-bottom: -15px;
+    }
+    
+    .folder, .folder-dark {
+        background-size: 80px 80px;
+    }
+    
+    .folder-tab, .folder-tab-dark {
+        min-width: 90px;
+        min-height: 22px;
+        padding: 4px 8px;
+        font-size: 9px;
+        top: -25px;
+    }
+    
+    .folder-title {
+        font-size: 9px;
+    }
+    
+    .sub-tab {
+        min-width: 25px;
+        min-height: 18px;
+        padding: 2px 4px;
+        font-size: 6px;
+        background-size: 40px 40px;
+    }
+    
+    .sub-tabs {
+        top: -20px;
+        gap: 1px;
+    }
+    
+    .folder-base:not(.expanded):not(.selected) {
+        height: calc((100vh - 120px) / 6);
+    }
+    
+    .folder-base.selected {
+        height: 14vh;
+    }
+    
+    /* Riposizionamento compatto per mobile piccolo */
+    .folder-base:nth-child(1) .folder-tab { left: 72%; }
+    .folder-base:nth-child(2) .folder-tab-dark { left: 58%; }
+    .folder-base:nth-child(3) .folder-tab { left: 47%; }
+    .folder-base:nth-child(4) .folder-tab-dark { left: 33%; }
+    .folder-base:nth-child(5) .folder-tab { left: 19%; }
+    .folder-base:nth-child(6) .folder-tab-dark { left: 5%; }
+    
+    .folder-base:nth-child(1) .sub-tabs { left: 72%; margin-left: -66px; }
+    .folder-base:nth-child(2) .sub-tabs { left: 58%; margin-left: -66px; }
+    .folder-base:nth-child(3) .sub-tabs { left: 47%; margin-left: -66px; }
+    .folder-base:nth-child(4) .sub-tabs { left: 33%; margin-left: 100px; }
+    .folder-base:nth-child(5) .sub-tabs { left: 19%; margin-left: 100px; }
+    .folder-base:nth-child(6) .sub-tabs { left: 5%; margin-left: 100px; }
+    
+    .controls {
+        top: 2px;
+        right: 2px;
+        gap: 4px;
+    }
+    
+    .btn {
+        padding: 3px 6px;
+        font-size: 9px;
+    }
+    
+    .close-btn {
+        width: 22px;
+        height: 22px;
+        font-size: 12px;
+        top: 2px;
+        right: 2px;
+    }
+    
+    /* Elementi del collage più piccoli su mobile */
+    .collage-element {
+        padding: 6px;
+    }
+    
+    .text-element {
+        min-width: 100px;
+        font-size: 12px;
+    }
+    
+    .image-placeholder {
+        min-width: 120px;
+        min-height: 80px;
+        font-size: 11px;
+    }
+    
+    .canvas-area {
+        background-size: 12px 12px;
+        min-height: 250px;
+    }
+}
 
-            .folder-base:not(.expanded):not(.selected) {
-                height: calc((100vh - 250px) / 6); /* Altezza compatta per 6 cartelle */
-            }
-
-            .folder-base.selected {
-                height: 45vh; /* Più spazio per il contenuto */
-                transform: translateY(-5px);
-            }
-
-            .folder-base.expanded .folder-content {
-                height: calc(100vh - 50px);
-            }
-
-            .folder-tab, .folder-tab-dark {
-                min-width: 120px;
-                min-height: 35px;
-                padding: 12px 15px;
-                top: -40px;
-                font-size: 10px;
-                background-size: 80px 80px;
-                border-radius: 3px 3px 0 0; /* Ancora più squadrato su mobile */
-                clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); /* Trapezio isoscele */
-                box-shadow: 0 0px 20px rgba(0,0,0,0.7);
-            }
-
-            .folder-tab:hover, .folder-tab-dark:hover {
-                box-shadow: 0 0px 30px rgba(0,0,0,0.8); /* Ombra ridotta rispetto al folder hover */
-            }
-
-            .sub-tabs {
-                top: -25px;
-                gap: 3px;
-            }
-
-            .sub-tab {
-            min-width: 35px; /* Ancora più piccolo su mobile */
-            min-height: 22px;
-            padding: 4px 6px;
-            border-radius: 2px 2px 0 0; /* Ancora più squadrato */
-            font-size: 8px;
-            background-size: 70px 70px; /* Texture proporzionata */
-            clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); /* Trapezio isoscele */
-            box-shadow: 0 0px 15px rgba(0,0,0,0.7);
-            
-            }
-
-            .sub-tab:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 0px 20px rgba(0,0,0,0.8);
-            }
-
-             .sub-tab.active {
-            box-shadow: 0 0px 15px rgba(0,0,0,0.7);
-            }
-
-            /* Posizionamento tab su mobile */
-            .folder-base:nth-child(1) .folder-tab { left: 61%; }
-            .folder-base:nth-child(2) .folder-tab-dark { left: 50%; }
-            .folder-base:nth-child(3) .folder-tab { left: 39%; }
-            .folder-base:nth-child(4) .folder-tab-dark { left: 28%; }
-            .folder-base:nth-child(5) .folder-tab { left: 17%; }
-            .folder-base:nth-child(6) .folder-tab-dark { left: 6%; }
-
-            .folder-base:nth-child(1) .sub-tabs { left: 61%; }
-            .folder-base:nth-child(2) .sub-tabs { left: 50%; }
-            .folder-base:nth-child(3) .sub-tabs { left: 39%; }
-            .folder-base:nth-child(4) .sub-tabs { left: 28%; }
-            .folder-base:nth-child(5) .sub-tabs { left: 17%; }
-            .folder-base:nth-child(6) .sub-tabs { left: 6%; }
-
-            .folder-base:nth-child(1) .sub-tabs { top: -21px; margin-left: -78px;}
-            .folder-base:nth-child(2) .sub-tabs { top: -21px; margin-left: -78px; }
-            .folder-base:nth-child(3) .sub-tabs { top: -21px; margin-left: -78px;}
-            .folder-base:nth-child(4) .sub-tabs { top: -21px; margin-left: 126px;}
-            .folder-base:nth-child(5) .sub-tabs { top: -21px; margin-left: 126px;}
-            .folder-base:nth-child(6) .sub-tabs { top: -21Px; margin-left: 126px;}
-
-            .folder-title {
-                font-size: 11px;
-                font-family: 'Lora', serif; /* Stesso font serif per mobile */
-                color: #f5f1eb;
-                text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-            }
-
-            .folder-content {
-                padding: 10px;
-            }
-
-            .canvas-area {
-                background-size: 10px 10px;
-                min-height: 200px;
-            }
-
-            .text-element {
-                min-width: 100px;
-                font-size: 12px;
-            }
-
-            .image-placeholder {
-                min-width: 120px;
-                min-height: 80px;
-                font-size: 10px;
-            }
-
-            .controls {
-                top: 5px;
-                right: 5px;
-                gap: 5px;
-                flex-wrap: wrap;
-            }
-
-            .btn {
-                padding: 5px 10px;
-                font-size: 10px;
-            }
-
-            .close-btn {
-                width: 25px;
-                height: 25px;
-                font-size: 14px;
-            }
-
-            .content-preview {
-                font-size: 9px;
-                padding: 6px;
-            }
-        }
-
+/* Touch devices - miglioramenti per l'interazione touch */
+@media (hover: none) and (pointer: coarse) {
+    .folder-base:hover {
+        transform: none; /* Disabilita hover su touch */
+    }
+    
+    .folder-tab:hover, .folder-tab-dark:hover {
+        box-shadow: none;
+    }
+    
+    .sub-tab:hover {
+        transform: none;
+    }
+    
+    .btn:hover {
+        transform: none;
+        background: #d4af37; /* Mantiene colore originale */
+    }
+    
+    /* Aumenta le aree touch per una migliore usabilità */
+    .folder-tab, .folder-tab-dark {
+        min-height: 35px;
+        padding: 8px 15px;
+    }
+    
+    .sub-tab {
+        min-height: 25px;
+        padding: 5px 8px;
+    }
+    
+    .btn {
+        min-height: 35px;
+        padding: 8px 15px;
+    }
+    
+    .close-btn {
+        min-width: 35px;
+        min-height: 35px;
+    }
+}
         /* Barre laterali metalliche */
 .sidebar {
     position: fixed;
@@ -584,7 +755,58 @@
     box-shadow: inset 0 0 15px rgba(0,0,0,0.3), 0 -5px 20px rgba(0,0,0,0.5);
     z-index: 150;
     border-radius: 8px 8px 0 0;
+    transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(0);
 }
+
+.drawer-container.initial {
+    height: 100vh;
+    border-radius: 0;
+}
+
+.drawer-container.compact {
+    height: 280px;
+    border-radius: 8px 8px 0 0;
+}
+
+.drawer-container.initial .drawer-handle {
+    background: linear-gradient(180deg, #e4e4e4 0%, #b0b0b0 50%, #909090 100%);
+    box-shadow: 
+        inset 0 2px 4px rgba(255,255,255,0.3),
+        inset 0 -2px 4px rgba(0,0,0,0.3),
+        0 3px 12px rgba(0,0,0,0.6);
+}
+
+/* Animazione pulsante quando il cassetto è in stato iniziale */
+.drawer-container.initial .drawer-handle::after {
+    content: '↓ ↓ ↓ ↓ ↓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    color: #555;
+    font-weight: bold;
+    animation: bounceDown 2s infinite;
+}
+
+@keyframes bounceDown {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translate(-50%, -50%);
+    }
+    40% {
+        transform: translate(-50%, -40%);
+    }
+    60% {
+        transform: translate(-50%, -60%);
+    }
+}
+
+/* Nascondi la freccia quando il cassetto è compatto */
+.drawer-container.compact .drawer-handle::after {
+    display: none;
+}
+
 
 /* Texture metallica per il cassetto */
 .drawer-container::before {
@@ -606,7 +828,7 @@
     left: 50%;
     transform: translateX(-50%);
     width: 120px;
-    height: 25px;
+    height: 30px;
     background: linear-gradient(180deg, #d4d4d4 0%, #a0a0a0 50%, #808080 100%);
     border: 2px solid #606060;
     border-radius: 12px;
@@ -660,43 +882,7 @@
     margin-bottom: 80px; /* Spazio aggiuntivo per il cassetto */
 }
 
-/* Media query per mobile */
-@media (max-width: 600px) {
-    .sidebar {
-        width: 30px;
-    }
-    
-    body {
-        padding-left: 30px;
-        padding-right: 30px;
-    }
-    
-    .drawer-container {
-        left: 30px;
-        right: 30px;
-        height: 60px;
-    }
-    
-    .drawer-handle {
-        width: 80px;
-        height: 20px;
-        top: 10px;
-    }
-    
-    .drawer-label {
-        top: 35px;
-        font-size: 8px;
-        padding: 3px 8px;
-    }
-    
-    body {
-        padding-bottom: 60px;
-    }
-    
-    .archive-container {
-        margin-bottom: 60px;
-    }
-}
+
     </style>
 </head>
 <body>
@@ -881,6 +1067,185 @@
         let selectedFolder = null;
         let expandedFolder = null;
         let draggedElement = null;
+
+        let drawer = null;
+        let drawerHandle = null;
+        let archiveContainer = null;
+        let isDrawerDragging = false;
+        let startDrawerY = 0;
+        let startDrawerHeight = 0;
+
+// Inizializzazione del cassetto E archive-container
+document.addEventListener('DOMContentLoaded', function() {
+    drawer = document.querySelector('.drawer-container');
+    drawerHandle = document.querySelector('.drawer-handle');
+    archiveContainer = document.querySelector('.archive-container');
+    
+    // Imposta il cassetto come inizialmente espanso e archive nascosto
+    drawer.classList.add('initial');
+    archiveContainer.classList.add('hidden');
+    
+    // Gestione click sulla maniglia
+    drawerHandle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        toggleDrawerAndArchive();
+    });
+    
+    // Gestione touch sulla maniglia
+    drawerHandle.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const touch = e.touches[0];
+        startDrawerY = touch.clientY;
+        startDrawerHeight = drawer.offsetHeight;
+        isDrawerDragging = true;
+        
+        drawer.style.transition = 'none';
+        archiveContainer.style.transition = 'none';
+    });
+    
+    document.addEventListener('touchmove', function(e) {
+        if (!isDrawerDragging) return;
+        
+        const touch = e.touches[0];
+        const deltaY = touch.clientY - startDrawerY;
+        
+        // Solo se si trascina verso il basso
+        if (deltaY > 0) {
+            const newHeight = Math.max(280, startDrawerHeight - deltaY);
+            drawer.style.height = newHeight + 'px';
+            
+            // Calcola la progress dell'animazione (0 = completamente aperto, 1 = compatto)
+            const progress = Math.min(1, Math.max(0, (window.innerHeight - newHeight) / (window.innerHeight - 280)));
+            
+            // Anima l'archive-container in base al progress
+            const translateY = -100 + (progress * 100); // Da -100vh a 0vh
+            archiveContainer.style.transform = `translateY(${translateY}vh)`;
+            archiveContainer.style.opacity = progress;
+            
+            // Se l'altezza scende sotto una soglia, attiva lo stato compatto
+            if (newHeight <= 350) {
+                drawer.classList.remove('initial');
+                drawer.classList.add('compact');
+                archiveContainer.classList.remove('hidden');
+                archiveContainer.classList.add('visible');
+            } else {
+                drawer.classList.remove('compact');
+                drawer.classList.add('initial');
+                archiveContainer.classList.remove('visible');
+                archiveContainer.classList.add('hidden');
+            }
+        }
+        
+        e.preventDefault();
+    });
+    
+    document.addEventListener('touchend', function() {
+        if (!isDrawerDragging) return;
+        
+        isDrawerDragging = false;
+        drawer.style.transition = 'height 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        archiveContainer.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        
+        // Snap alla posizione più vicina
+        const currentHeight = drawer.offsetHeight;
+        if (currentHeight > 400) {
+            expandDrawerAndHideArchive();
+        } else {
+            compactDrawerAndShowArchive();
+        }
+    });
+    
+    // Gestione mouse per desktop
+    drawerHandle.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        startDrawerY = e.clientY;
+        startDrawerHeight = drawer.offsetHeight;
+        isDrawerDragging = true;
+        
+        drawer.style.transition = 'none';
+        archiveContainer.style.transition = 'none';
+    });
+    
+    document.addEventListener('mousemove', function(e) {
+        if (!isDrawerDragging) return;
+        
+        const deltaY = e.clientY - startDrawerY;
+        
+        if (deltaY > 0) {
+            const newHeight = Math.max(280, startDrawerHeight - deltaY);
+            drawer.style.height = newHeight + 'px';
+            
+            // Calcola la progress dell'animazione
+            const progress = Math.min(1, Math.max(0, (window.innerHeight - newHeight) / (window.innerHeight - 280)));
+            
+            // Anima l'archive-container
+            const translateY = -100 + (progress * 100);
+            archiveContainer.style.transform = `translateY(${translateY}vh)`;
+            archiveContainer.style.opacity = progress;
+            
+            if (newHeight <= 350) {
+                drawer.classList.remove('initial');
+                drawer.classList.add('compact');
+                archiveContainer.classList.remove('hidden');
+                archiveContainer.classList.add('visible');
+            } else {
+                drawer.classList.remove('compact');
+                drawer.classList.add('initial');
+                archiveContainer.classList.remove('visible');
+                archiveContainer.classList.add('hidden');
+            }
+        }
+    });
+    
+    document.addEventListener('mouseup', function() {
+        if (!isDrawerDragging) return;
+        
+        isDrawerDragging = false;
+        drawer.style.transition = 'height 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        archiveContainer.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        
+        const currentHeight = drawer.offsetHeight;
+        if (currentHeight > 400) {
+            expandDrawerAndHideArchive();
+        } else {
+            compactDrawerAndShowArchive();
+        }
+    });
+});
+
+function toggleDrawerAndArchive() {
+    if (drawer.classList.contains('initial')) {
+        compactDrawerAndShowArchive();
+    } else {
+        expandDrawerAndHideArchive();
+    }
+}
+
+function expandDrawerAndHideArchive() {
+    drawer.classList.remove('compact');
+    drawer.classList.add('initial');
+    drawer.style.height = '100vh';
+    
+    archiveContainer.classList.remove('visible');
+    archiveContainer.classList.add('hidden');
+    archiveContainer.style.transform = 'translateY(-100vh)';
+    archiveContainer.style.opacity = '0';
+}
+
+function compactDrawerAndShowArchive() {
+    drawer.classList.remove('initial');
+    drawer.classList.add('compact');
+    drawer.style.height = '280px';
+    
+    archiveContainer.classList.remove('hidden');
+    archiveContainer.classList.add('visible');
+    archiveContainer.style.transform = 'translateY(0)';
+    archiveContainer.style.opacity = '1';
+}
 
         // Gestione delle sotto-linguette
         document.querySelectorAll('.sub-tab').forEach(subTab => {
